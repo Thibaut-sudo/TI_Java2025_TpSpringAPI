@@ -6,7 +6,7 @@ import be.bstorm.demospringapi.api.models.security.forms.LoginForm;
 import be.bstorm.demospringapi.api.models.security.forms.RegisterForm;
 import be.bstorm.demospringapi.bll.services.security.AuthService;
 import be.bstorm.demospringapi.dl.entities.User;
-import be.bstorm.demospringapi.il.utils.JwtUtil;
+import be.bstorm.demospringapi.il.utils.jwt.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

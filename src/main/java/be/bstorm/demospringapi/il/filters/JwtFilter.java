@@ -1,6 +1,6 @@
 package be.bstorm.demospringapi.il.filters;
 
-import be.bstorm.demospringapi.il.utils.JwtUtil;
+import be.bstorm.demospringapi.il.utils.jwt.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

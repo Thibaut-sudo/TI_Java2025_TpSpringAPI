@@ -1,4 +1,4 @@
-package be.bstorm.demospringapi.il.utils;
+package be.bstorm.demospringapi.il.utils.jwt;
 
 import be.bstorm.demospringapi.dl.entities.User;
 import io.jsonwebtoken.Claims;
@@ -33,7 +33,7 @@ public class JwtUtil {
 
     public String generateToken(User user) {
         return this.builder
-                .setSubject(user.getEmail())
+                .setSubject(user.getUsername())
                 .claim("id",user.getId())
                 .claim("role",user.getRole())
                 .setIssuedAt(new Date())
