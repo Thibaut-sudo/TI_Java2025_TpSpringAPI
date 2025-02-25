@@ -29,6 +29,7 @@ public record SearchParam<T>(
 
     public static <T>List<SearchParam<T>> create(Map<String,String> routeParams) {
         return routeParams.entrySet().stream()
+                .filter(entry -> !entry.getKey().equals("page") && !entry.getKey().equals("size") && !entry.getKey().equals("sort"))
                 .map(SearchParam::<T>create)
                 .toList();
     }

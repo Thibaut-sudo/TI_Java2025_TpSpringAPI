@@ -8,6 +8,8 @@ import be.bstorm.demospringapi.dl.entities.User;
 import be.bstorm.demospringapi.il.utils.request.SearchParam;
 import be.bstorm.demospringapi.il.utils.specifications.SearchSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +22,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public List<User> getUsers(List<SearchParam<User>> searchParams) {
+    public Page<User> getUsers(List<SearchParam<User>> searchParams, Pageable pageable) {
         if(searchParams.isEmpty()){
-            return userRepository.findAll();
+            return userRepository.findAll(pageable);
         }
         return userRepository.findAll(
                 Specification.allOf(
                         searchParams.stream()
                                 .map(SearchSpecification::search)
                                 .toList()
-                )
+                ),
+                pageable
         );
     }
 
