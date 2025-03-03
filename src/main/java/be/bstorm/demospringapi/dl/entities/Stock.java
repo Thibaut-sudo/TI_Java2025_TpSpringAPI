@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,5 +17,6 @@ public class Stock {
     @OneToOne
     private Product produit;
     private int quantiteDisponible;
+
 
 }
