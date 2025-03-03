@@ -1,4 +1,4 @@
-package be.bstorm.demospringapi.bll.services.impls;
+/*package be.bstorm.demospringapi.bll.services.impls;
 
 import be.bstorm.demospringapi.bll.services.PanierService;
 import be.bstorm.demospringapi.dal.repositories.PanierRepository;
@@ -17,7 +17,7 @@ public class PanierServiceImpl implements PanierService {
 
     @Override
     public Panier ajouterPanier(Panier panier) {
-        Optional<Panier> existingPanier = panierRepository.findByUser(panier.getUser().getIdUser());
+        Optional<Panier> existingPanier = panierRepository.findByUser(panier.getId_Panier());
         if (existingPanier.isPresent()) {
             throw new RuntimeException("a deja un panier");
         }
@@ -37,7 +37,7 @@ public class PanierServiceImpl implements PanierService {
             panier.setStatut(statut);
             return panierRepository.save(panier);
         }
-        throw new RuntimeException("Panier non trouvé !");
+        throw new RuntimeException("Panier vide");
     }
 
     @Override
@@ -49,4 +49,4 @@ public class PanierServiceImpl implements PanierService {
     public void supprimerPanier(UUID Id_Panier) {
         panierRepository.deleteById(Id_Panier);
     }
-}
+}*/
