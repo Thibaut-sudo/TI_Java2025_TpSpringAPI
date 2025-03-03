@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/tp_spring_api
-    username: postgres
-    password: postgres
+    username: Ton_User
+    password: Ton_MDP
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
