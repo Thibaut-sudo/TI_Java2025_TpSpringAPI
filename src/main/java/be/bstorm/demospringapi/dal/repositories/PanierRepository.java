@@ -10,7 +10,8 @@ import java.util.UUID;
 @Repository
 public interface PanierRepository extends JpaRepository<Panier, Integer> {
 
-    Optional<Panier> findByUser_IdUser(UUID idUser);
+    Optional<Panier> findByUser(UUID idUser);
     Optional<Panier> findByStatut(String statut);
-
+    Optional<Panier> findById(UUID idPanier);
+    void deleteById(UUID idPanier);
 }
