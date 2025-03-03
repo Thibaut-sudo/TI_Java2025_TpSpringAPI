@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,5 +33,5 @@ public class Product {
 
     @OneToMany
     @JoinColumn(name = "stock_id", nullable = false)
-    private Stock stock;
+    private List<Stock>stocks ;
 }

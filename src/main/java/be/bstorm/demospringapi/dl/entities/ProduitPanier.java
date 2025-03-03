@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PanierProduit {
+public class ProduitPanier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
