@@ -39,5 +39,9 @@ public class Product {
 
 
     public Product(@NotBlank @Size(max = 30) String nom, @NotBlank @Size(max = 250) String description, @NotBlank String imageUrl, @NotBlank @Size(max = 30) BigDecimal prix) {
+        this.nom = nom;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.prix = prix;
     }
 }
