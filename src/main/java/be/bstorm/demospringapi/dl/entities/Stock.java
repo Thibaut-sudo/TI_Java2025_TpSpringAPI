@@ -20,4 +20,8 @@ public class Stock {
     private int quantiteDisponible;
 
 
+    public Stock(int i, Product product) {
+        this.quantiteDisponible = i;
+        this.produit = product;
+    }
 }
