@@ -1,4 +1,16 @@
 package be.bstorm.demospringapi.api.models.security.dtos;
 
-public class StockDTO {
+import be.bstorm.demospringapi.dl.entities.Product;
+import be.bstorm.demospringapi.dl.entities.Stock;
+
+public record StockDTO(
+        Long id,
+        int quantiteDisponible,
+        Long produitId) {
+
+
+    public static StockDTO fromStock(Stock stock) {
+        return new StockDTO(stock.getId(), stock.getQuantiteDisponible(), stock.getProduit().getId());
+
+    }
 }
