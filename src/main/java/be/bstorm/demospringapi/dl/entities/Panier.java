@@ -38,5 +38,4 @@ public class Panier {
         this.prixTotal = prixTotal;
         this.statut = statut;
     }
-
 }

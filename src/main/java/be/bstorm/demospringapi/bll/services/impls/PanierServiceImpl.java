@@ -30,8 +30,8 @@ public class PanierServiceImpl implements PanierService {
     }
 
     @Override
-    public Panier updateStatut(UUID Id_Panier, String statut) {
-        Optional<Panier> panierOpt = panierRepository.findById(Id_Panier);
+    public Panier updateStatut(UUID idPanier, String statut) {
+        Optional<Panier> panierOpt = panierRepository.findById(idPanier);
         if (panierOpt.isPresent()) {
             Panier panier = panierOpt.get();
             panier.setStatut(statut);
@@ -41,12 +41,12 @@ public class PanierServiceImpl implements PanierService {
     }
 
     @Override
-    public Panier updatePrixTotal(UUID Id_Panier, int prixTotal) {
+    public Panier updatePrixTotal(UUID idPanier, int prixTotal) {
         return null;
     }
 
     @Override
-    public void supprimerPanier(UUID Id_Panier) {
-        panierRepository.deleteById(Id_Panier);
+    public void supprimerPanier(UUID idPanier) {
+        panierRepository.deleteById(idPanier);
     }
 }*/
