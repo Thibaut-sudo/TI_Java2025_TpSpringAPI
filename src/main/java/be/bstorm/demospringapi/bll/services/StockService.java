@@ -1,5 +1,6 @@
 package be.bstorm.demospringapi.bll.services;
 
+import be.bstorm.demospringapi.api.models.security.forms.StockForm;
 import be.bstorm.demospringapi.dl.entities.Stock;
 import be.bstorm.demospringapi.il.utils.request.SearchParam;
 import org.springframework.data.domain.Page;
@@ -9,4 +10,5 @@ import java.util.List;
 
 public interface StockService {
     Page<Stock> getStocks(List<SearchParam<Stock>> searchParams, Pageable pageable);
+    void insert(StockForm stockForm);
 }
