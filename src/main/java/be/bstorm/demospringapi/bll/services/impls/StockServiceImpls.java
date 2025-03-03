@@ -1,4 +1,9 @@
 package be.bstorm.demospringapi.bll.services.impls;
 
-public class StockServiceImpls {
+import be.bstorm.demospringapi.bll.services.StockService;
+import org.springframework.stereotype.Service;
+
+@Service
+
+public class StockServiceImpls implements StockService {
 }
