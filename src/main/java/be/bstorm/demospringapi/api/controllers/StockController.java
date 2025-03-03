@@ -27,7 +27,7 @@ public class StockController {
             @RequestParam Map<String,String>params,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false, defaultValue = "name") String sort
+            @RequestParam(required = false, defaultValue = "id") String sort
             ) {
         List<SearchParam<Stock>> searchParams = SearchParam.create(params);
         List<StockDTO>stock = stockService.getStocks(
