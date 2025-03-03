@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +18,7 @@ public class Panier {
 
     @Id
     @GeneratedValue
-    private UUID Id_Panier;
+    private UUID idPanier;
 
     @Column(nullable = false)
     private int prixTotal;
@@ -25,10 +27,11 @@ public class Panier {
     private String statut;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL)
-    private List<ProduitPanier> produits;
+    @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProduitPanier> produits = new ArrayList<>();
 
     public Panier(User user, int prixTotal, String statut) {
         this.user = user;
