@@ -1,9 +1,12 @@
 package be.bstorm.demospringapi.dl.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,7 +34,10 @@ public class Product {
     @Setter
     private BigDecimal prix ;
 
-    @OneToMany
-    @JoinColumn(name = "stock_id", nullable = false)
-    private List<Stock>stocks ;
+    @OneToMany(mappedBy = "produit", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Stock>stocks = new ArrayList<>();
+
+
+    public Product(@NotBlank @Size(max = 30) String nom, @NotBlank @Size(max = 250) String description, @NotBlank String imageUrl, @NotBlank @Size(max = 30) BigDecimal prix) {
+    }
 }
