@@ -68,7 +68,7 @@ public class DataInitializer implements CommandLineRunner {
         }
         if (stockRepository.count() == 0) {
             List<Stock> stocks = List.of(
-                    new Stock(1000, new Product("Banndana","Fruit", "https://www.google.com", new BigDecimal(10)))
+                    new Stock(1000, productRepository.getById(1L))
 
             );
             stockRepository.saveAll(stocks);

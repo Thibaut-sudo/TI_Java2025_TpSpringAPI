@@ -1,5 +1,6 @@
 package be.bstorm.demospringapi.bll.services.impls;
 
+import be.bstorm.demospringapi.api.models.security.forms.StockForm;
 import be.bstorm.demospringapi.bll.services.StockService;
 import be.bstorm.demospringapi.dal.repositories.StockRepository;
 import be.bstorm.demospringapi.dl.entities.Stock;
@@ -36,4 +37,14 @@ public class StockServiceImpls implements StockService {
                 pageable
         );
     }
+
+
+
+    @Override
+    public void insert(StockForm stockForm) {
+        Stock stock = stockForm.toStock();
+        stockRepository.save(stock);
+
+    }
+
 }

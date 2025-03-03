@@ -1,17 +1,16 @@
 package be.bstorm.demospringapi.api.controllers;
 
 import be.bstorm.demospringapi.api.models.security.dtos.StockDTO;
+import be.bstorm.demospringapi.api.models.security.forms.StockForm;
 import be.bstorm.demospringapi.bll.services.StockService;
 import be.bstorm.demospringapi.dl.entities.Stock;
 import be.bstorm.demospringapi.il.utils.request.SearchParam;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.naming.directory.SearchControls;
 import java.util.List;
@@ -40,4 +39,15 @@ public class StockController {
 
        return ResponseEntity.ok(stock);
     }
+
+    @PostMapping
+    public ResponseEntity<StockDTO> createStock(
+            @Valid @RequestBody StockForm form
+
+            ){
+        stockService.insert(form);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
