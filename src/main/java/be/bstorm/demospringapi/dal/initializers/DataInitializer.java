@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -36,32 +37,45 @@ public class DataInitializer implements CommandLineRunner {
 
     private void Stock() {
         if (stockRepository.count() == 0) {
-            List<Stock> stocks = List.of(
-                    new Stock(1000, productRepository.findById(1L).orElse(null)),
-                    new Stock(800, productRepository.findById(2L).orElse(null)),
-                    new Stock(1200, productRepository.findById(3L).orElse(null)),
-                    new Stock(500, productRepository.findById(4L).orElse(null)),
-                    new Stock(950, productRepository.findById(5L).orElse(null)),
-                    new Stock(300, productRepository.findById(6L).orElse(null)),
-                    new Stock(400, productRepository.findById(7L).orElse(null)),
-                    new Stock(600, productRepository.findById(8L).orElse(null)),
-                    new Stock(700, productRepository.findById(9L).orElse(null)),
-                    new Stock(850, productRepository.findById(10L).orElse(null)),
-                    new Stock(1100, productRepository.findById(11L).orElse(null)),
-                    new Stock(750, productRepository.findById(12L).orElse(null)),
-                    new Stock(920, productRepository.findById(13L).orElse(null)),
-                    new Stock(430, productRepository.findById(14L).orElse(null)),
-                    new Stock(310, productRepository.findById(15L).orElse(null)),
-                    new Stock(580, productRepository.findById(16L).orElse(null)),
-                    new Stock(670, productRepository.findById(17L).orElse(null)),
-                    new Stock(250, productRepository.findById(18L).orElse(null)),
-                    new Stock(150, productRepository.findById(19L).orElse(null)),
-                    new Stock (200,productRepository.findById(20L).orElse(null))
 
-            );
+            // Récupération des utilisateurs ayant le rôle COMMERCIAL
+            List<User> commerciaux = userRepository.findAll()
+                    .stream()
+                    .filter(user -> user.getRole() == UserRole.COMERCIAL)
+                    .toList();
+
+            if (commerciaux.isEmpty()) {
+                System.out.println("Erreur : Aucun commercial trouvé.");
+                return;
+            }
+
+            // Récupération de tous les produits
+            List<Product> produits = productRepository.findAll();
+
+            if (produits.isEmpty()) {
+                System.out.println("Erreur : Aucun produit trouvé.");
+                return;
+            }
+
+            // Création des stocks et attribution aux commerciaux de manière équilibrée
+            List<Stock> stocks = new ArrayList<>();
+            int commercialIndex = 0;
+
+            for (Product produit : produits) {
+                User commercialAttribue = commerciaux.get(commercialIndex);
+                stocks.add(new Stock((int) (Math.random() * 100) + 1, produit, commercialAttribue));
+                //randon entre 1 et 100
+
+
+                // Passer au commercial suivant en boucle
+                commercialIndex = (commercialIndex + 1) % commerciaux.size();
+            }
+
+            // Sauvegarde des stocks
             stockRepository.saveAll(stocks);
         }
     }
+
 
     private void Produit() {
         if (productRepository.count() == 0) {
@@ -98,14 +112,16 @@ public class DataInitializer implements CommandLineRunner {
             String password = passwordEncoder.encode("Test1234=");
 
             List<User> users = List.of(
-                    new User(
-                            "admin@admin.be", password, "admin", "admin", LocalDate.now(), UserRole.ADMIN, null),
-                    new User(
-                            "user@user.be", password, "user", "user", LocalDate.now(), UserRole.USER, null),
-                    new User(
-                            "modo@modo.be", password, "modo", "modo", LocalDate.now(), UserRole.MODERATOR, null)
-                    );
+                    new User("admin@admin.be", password, "admin", "admin", LocalDate.now(), UserRole.ADMIN, null),
+                    new User("user@user.be", password, "user", "user", LocalDate.now(), UserRole.USER, null),
+                    new User("modo@modo.be", password, "modo", "modo", LocalDate.now(), UserRole.COMERCIAL, null),
+                    new User("com1@company.be", password, "Alice", "Martin", LocalDate.now(), UserRole.COMERCIAL, null),
+                    new User("com2@company.be", password, "Bob", "Durand", LocalDate.now(), UserRole.COMERCIAL, null),
+                    new User("com3@company.be", password, "Charlie", "Dubois", LocalDate.now(), UserRole.COMERCIAL, null),
+                    new User("com4@company.be", password, "Diane", "Leroy", LocalDate.now(), UserRole.COMERCIAL, null)
+            );
             userRepository.saveAll(users);
         }
     }
+
 }

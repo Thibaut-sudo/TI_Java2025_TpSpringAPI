@@ -8,17 +8,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@Entity @Table(name = "user_")
+@Entity
+@Table(name = "user_")
 @Getter
-@EqualsAndHashCode(callSuper = true, of = {"email"}) @ToString(of = {"email","role"})
+@EqualsAndHashCode(callSuper = true, of = {"email"})
+@ToString(of = {"email", "role"})
 public class User extends BaseEntity<Long> implements UserDetails {
 
-    @Column(unique = true, nullable = false,length = 150)
+    @Column(unique = true, nullable = false, length = 150)
     @Setter
     private String email;
 
@@ -30,7 +29,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
     @Setter
     private String firstName;
 
-    @Column(length = 80,nullable = false)
+    @Column(length = 80, nullable = false)
     @Setter
     private String lastName;
 
@@ -48,14 +47,15 @@ public class User extends BaseEntity<Long> implements UserDetails {
     private String image;
 
     @ManyToMany
-    private final Set<User> friends;
+    private final Set<User> friends = new HashSet<>();
 
-    public User() {
-        this.friends = new HashSet<>();
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Setter
+    private List<Stock> stockPackages = new ArrayList<>();
+
+    public User() {}
 
     public User(String email, String password, String firstName, String lastName, LocalDate birthDate) {
-        this();
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -69,11 +69,21 @@ public class User extends BaseEntity<Long> implements UserDetails {
         this.image = image;
     }
 
-    public void AddFriend(User user) {
+    public void addStockPackage(Stock stockPackage) {
+        this.stockPackages.add(stockPackage);
+        stockPackage.setUser(this);
+    }
+
+    public void removeStockPackage(Stock stockPackage) {
+        this.stockPackages.remove(stockPackage);
+        stockPackage.setUser(null);
+    }
+
+    public void addFriend(User user) {
         this.friends.add(user);
     }
 
-    public void RemoveFriend(User user) {
+    public void removeFriend(User user) {
         this.friends.remove(user);
     }
 
