@@ -70,6 +70,13 @@ public class StockController {
         return ResponseEntity.noContent().build();
     }
 
+    //recupere le stock par idproduct
+    @GetMapping("/product/{id}")
+    public ResponseEntity<Integer> getStockByProduct(@PathVariable Long id){
+        Integer quantitee = stockService.getStockByProduct(id);
+        return ResponseEntity.ok(quantitee);
+    }
+
 
 
 }
