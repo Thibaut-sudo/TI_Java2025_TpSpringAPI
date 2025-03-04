@@ -1,26 +1,34 @@
-/*package be.bstorm.demospringapi.bll.services.impls;
+package be.bstorm.demospringapi.bll.services.impls;
 
 import be.bstorm.demospringapi.bll.services.PanierService;
-import be.bstorm.demospringapi.dal.repositories.PanierRepository;
 import be.bstorm.demospringapi.dl.entities.Panier;
-import lombok.RequiredArgsConstructor;
+import be.bstorm.demospringapi.dl.entities.User;
+import be.bstorm.demospringapi.dal.repositories.PanierRepository;
+import be.bstorm.demospringapi.dal.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class PanierServiceImpl implements PanierService {
 
     private final PanierRepository panierRepository;
+    private final UserRepository userRepository;
+
+    public PanierServiceImpl(PanierRepository panierRepository, UserRepository userRepository) {
+        this.panierRepository = panierRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Panier ajouterPanier(Panier panier) {
-        Optional<Panier> existingPanier = panierRepository.findByUser(panier.getId_Panier());
+        Optional<Panier> existingPanier = panierRepository.findByUser(panier.getUser());
         if (existingPanier.isPresent()) {
-            throw new RuntimeException("a deja un panier");
+            throw new IllegalStateException("l utilisateur possède déjà un panier.");
         }
+
         return panierRepository.save(panier);
     }
 
@@ -29,24 +37,30 @@ public class PanierServiceImpl implements PanierService {
         return Optional.empty();
     }
 
+
     @Override
-    public Panier updateStatut(UUID Id_Panier, String statut) {
-        Optional<Panier> panierOpt = panierRepository.findById(Id_Panier);
-        if (panierOpt.isPresent()) {
-            Panier panier = panierOpt.get();
-            panier.setStatut(statut);
-            return panierRepository.save(panier);
+    @Transactional
+    public Panier updateStatut(UUID idPanier, String statut) {
+        Panier panier = panierRepository.findById(idPanier)
+                .orElseThrow(() -> new EntityNotFoundException("panier non trouvé"));
+        panier.setStatut(statut);
+        return panierRepository.save(panier);
+    }
+
+    @Override
+    @Transactional
+    public Panier updatePrixTotal(UUID idPanier, int prixTotal) {
+        Panier panier = panierRepository.findById(idPanier)
+                .orElseThrow(() -> new EntityNotFoundException("panier non trouvé"));
+        panier.setPrixTotal(prixTotal);
+        return panierRepository.save(panier);
+    }
+
+    @Override
+    public void supprimerPanier(UUID idPanier) {
+        if (!panierRepository.existsById(idPanier)) {
+            throw new EntityNotFoundException("panier non trouvé");
         }
-        throw new RuntimeException("Panier vide");
+        panierRepository.deleteById(idPanier);
     }
-
-    @Override
-    public Panier updatePrixTotal(UUID Id_Panier, int prixTotal) {
-        return null;
-    }
-
-    @Override
-    public void supprimerPanier(UUID Id_Panier) {
-        panierRepository.deleteById(Id_Panier);
-    }
-}*/
+}
