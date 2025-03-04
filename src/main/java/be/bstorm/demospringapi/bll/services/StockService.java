@@ -16,4 +16,6 @@ public interface StockService {
     void update(Long id , @Valid StockForm form);
 
     void delete(Long id);
+
+    Integer getStockByProduct(Long id);
 }

@@ -64,4 +64,10 @@ public class StockServiceImpls implements StockService {
         stockRepository.delete(stock);
     }
 
+    @Override
+    public Integer getStockByProduct(Long id) {
+        return stockRepository.getQuantiteFromIdProduit(id).orElseThrow();
+
+    }
+
 }

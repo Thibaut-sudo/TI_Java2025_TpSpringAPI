@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.Optional;
 
 @Repository
@@ -14,8 +15,6 @@ public interface StockRepository extends JpaRepository<Stock, Long>, JpaSpecific
     Optional<Stock> findById(Long aLong);
 
 
-
-
-
-
+    @Query ("SELECT s.quantiteDisponible FROM Stock s WHERE s.produit.id = :id")
+    Optional<Integer> getQuantiteFromIdProduit(Long id);
 }
