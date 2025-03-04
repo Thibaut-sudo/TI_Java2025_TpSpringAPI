@@ -13,7 +13,7 @@ public interface StockService {
     Page<Stock> getStocks(List<SearchParam<Stock>> searchParams, Pageable pageable);
     void insert(StockForm stockForm);
 
-    void update(@Valid StockForm form);
+    void update(Long id , @Valid StockForm form);
 
     void delete(Long id);
 }

@@ -52,17 +52,19 @@ public class StockController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<StockDTO> updateStock(
+            @PathVariable Long id,
             @Valid @RequestBody StockForm form
     ){
-        stockService.update(form);
+        stockService.update(id, form);
         return ResponseEntity.noContent().build();
     }
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<StockDTO> deleteStock(
-            @RequestParam Long id
+            @PathVariable Long id
+
     ){
         stockService.delete(id);
         return ResponseEntity.noContent().build();
