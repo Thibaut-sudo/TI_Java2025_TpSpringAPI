@@ -48,9 +48,14 @@ public class StockServiceImpls implements StockService {
     }
 
     @Override
-    public void update(StockForm form) {
-        Stock stock = form.toStock();
+    public void update(Long id , StockForm form) {
+        Stock stock = stockRepository.findById(id).orElseThrow();
+        stock.setQuantiteDisponible(form.quantite_disponible());
+
+
         stockRepository.save(stock);
+
+
     }
 
     @Override

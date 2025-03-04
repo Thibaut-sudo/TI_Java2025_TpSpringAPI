@@ -3,6 +3,8 @@ package be.bstorm.demospringapi.il.utils.specifications;
 import be.bstorm.demospringapi.il.utils.request.SearchParam;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.text.NumberFormat;
+
 public interface SearchSpecification {
 
     static <T> Specification<T> search(SearchParam<T> searchParam){
