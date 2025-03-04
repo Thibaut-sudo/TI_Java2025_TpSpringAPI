@@ -35,3 +35,15 @@ public interface SearchSpecification {
         };
     }
 }
+/*Opérateur	Description	SQL équivalent
+EQ (Equal)	Vérifie si la valeur est égale à celle du champ.	WHERE field = value
+NE (Not Equal)	Vérifie si la valeur est différente de celle du champ.	WHERE field <> value
+GT (Greater Than)	Vérifie si la valeur est strictement supérieure.	WHERE field > value
+GTE (Greater Than or Equal)	Vérifie si la valeur est supérieure ou égale.	WHERE field >= value
+LT (Less Than)	Vérifie si la valeur est strictement inférieure.	WHERE field < value
+LTE (Less Than or Equal)	Vérifie si la valeur est inférieure ou égale.	WHERE field <= value
+START (Commence par)	Vérifie si la valeur commence par une chaîne donnée.	WHERE field LIKE 'value%'
+END (Se termine par)	Vérifie si la valeur se termine par une chaîne donnée.	WHERE field LIKE '%value'
+CONTAINS (Contient)	Vérifie si la valeur contient une sous-chaîne.	WHERE field LIKE '%value%'
+IN (Dans une liste)	Vérifie si la valeur est dans une liste donnée.	WHERE field IN (value1, value2, ...)
+NIN (Not IN)	Vérifie si la valeur n'est pas dans une liste.	WHERE field NOT IN (value1, value2, ...)*/
