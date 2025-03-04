@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.directory.SearchControls;
@@ -40,6 +41,7 @@ public class StockController {
        return ResponseEntity.ok(stock);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<StockDTO> createStock(
             @Valid @RequestBody StockForm form
@@ -48,6 +50,24 @@ public class StockController {
         stockService.insert(form);
         return ResponseEntity.noContent().build();
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping
+    public ResponseEntity<StockDTO> updateStock(
+            @Valid @RequestBody StockForm form
+    ){
+        stockService.update(form);
+        return ResponseEntity.noContent().build();
+    }
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping
+    public ResponseEntity<StockDTO> deleteStock(
+            @RequestParam Long id
+    ){
+        stockService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 
 }
