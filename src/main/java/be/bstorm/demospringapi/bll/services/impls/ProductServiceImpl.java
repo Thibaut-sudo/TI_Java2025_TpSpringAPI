@@ -1,11 +1,10 @@
 package be.bstorm.demospringapi.bll.services.impls;
 
-import be.bstorm.demospringapi.api.models.security.dtos.ProductInfoDTO;
+import be.bstorm.demospringapi.api.models.security.dtos.ProductDTO;
 import be.bstorm.demospringapi.api.models.security.forms.ProductForm;
 import be.bstorm.demospringapi.bll.services.ProductService;
 import be.bstorm.demospringapi.dal.repositories.ProductRepository;
 import be.bstorm.demospringapi.dl.entities.Product;
-import be.bstorm.demospringapi.dl.entities.Stock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,20 +16,20 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository ;
 
     @Override
-    public List<ProductInfoDTO> foundAll() {
+    public List<ProductDTO> foundAll() {
 
         //voir en bas autre version
         return productRepository.findAll().stream()
-                .map(ProductInfoDTO::fromProduct)
+                .map(ProductDTO::fromProduct)
                 .toList();
     }
 
     @Override
-    public ProductInfoDTO foundOneDetails(Long id) {
+    public ProductDTO foundOneDetails(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID : " + id));
 
-        return ProductInfoDTO.fromProduct(product);
+        return ProductDTO.fromProduct(product);
     }
 
 
@@ -40,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
     @Override
-    public ProductInfoDTO update(Long id, ProductForm productForm) {
+    public ProductDTO update(Long id, ProductForm productForm) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID : " + id));
 
@@ -51,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.save(product);
 
-        return ProductInfoDTO.fromProduct(product);
+        return ProductDTO.fromProduct(product);
     }
 
     @Override

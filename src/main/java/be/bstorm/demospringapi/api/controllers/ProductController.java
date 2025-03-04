@@ -1,6 +1,6 @@
 package be.bstorm.demospringapi.api.controllers;
 
-import be.bstorm.demospringapi.api.models.security.dtos.ProductInfoDTO;
+import be.bstorm.demospringapi.api.models.security.dtos.ProductDTO;
 import be.bstorm.demospringapi.api.models.security.forms.ProductForm;
 import be.bstorm.demospringapi.bll.services.ProductService;
 import jakarta.validation.Valid;
@@ -17,14 +17,14 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductInfoDTO>> getAll() {
-        List<ProductInfoDTO> po = productService.foundAll();
+    public ResponseEntity<List<ProductDTO>> getAll() {
+        List<ProductDTO> po = productService.foundAll();
         return ResponseEntity.ok(po);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductInfoDTO> getOneDetails(@PathVariable Long id) {
-        ProductInfoDTO pi = productService.foundOneDetails(id);
+    public ResponseEntity<ProductDTO> getOneDetails(@PathVariable Long id) {
+        ProductDTO pi = productService.foundOneDetails(id);
         return ResponseEntity.ok(pi);
     }
 

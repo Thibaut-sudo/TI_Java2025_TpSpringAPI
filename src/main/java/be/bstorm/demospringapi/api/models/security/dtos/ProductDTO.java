@@ -4,7 +4,7 @@ import be.bstorm.demospringapi.dl.entities.Product;
 
 import java.math.BigDecimal;
 
-public record ProductInfoDTO(
+public record ProductDTO(
     Long id,
     String nom ,
     String description,
@@ -12,7 +12,7 @@ public record ProductInfoDTO(
     BigDecimal prix
 
     ){
-    public static ProductInfoDTO fromProduct (Product product){
-        return new ProductInfoDTO(product.getId(),product.getNom(),product.getDescription(),product.getImageUrl(),product.getPrix());
+    public static ProductDTO fromProduct (Product product){
+        return new ProductDTO(product.getId(),product.getNom(),product.getDescription(),product.getImageUrl(),product.getPrix());
     }
 }
