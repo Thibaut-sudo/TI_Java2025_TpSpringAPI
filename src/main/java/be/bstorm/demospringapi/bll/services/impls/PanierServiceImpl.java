@@ -2,7 +2,7 @@ package be.bstorm.demospringapi.bll.services.impls;
 
 import be.bstorm.demospringapi.bll.services.PanierService;
 import be.bstorm.demospringapi.dl.entities.Panier;
-import be.bstorm.demospringapi.dl.entities.User;
+import be.bstorm.demospringapi.dl.entities.ProduitPanier;
 import be.bstorm.demospringapi.dal.repositories.PanierRepository;
 import be.bstorm.demospringapi.dal.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -62,5 +62,10 @@ public class PanierServiceImpl implements PanierService {
             throw new EntityNotFoundException("panier non trouvé");
         }
         panierRepository.deleteById(idPanier);
+    }
+
+    @Override
+    public Panier addProduitToPanier(UUID panierId, ProduitPanier produitPanier) {
+        return null;
     }
 }
