@@ -1,5 +1,7 @@
 package be.bstorm.demospringapi.api.controllers;
 
+
+
 import be.bstorm.demospringapi.api.models.security.dtos.StockDTO;
 import be.bstorm.demospringapi.api.models.security.forms.StockForm;
 import be.bstorm.demospringapi.bll.services.StockService;
@@ -13,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.directory.SearchControls;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/stock")
 public class StockController {
+
     private final StockService stockService;
     @GetMapping
     public ResponseEntity<List<StockDTO>> getStocks(
@@ -30,15 +32,18 @@ public class StockController {
             @RequestParam(required = false, defaultValue = "id") String sort
             ) {
         List<SearchParam<Stock>> searchParams = SearchParam.create(params);
-        List<StockDTO>stock = stockService.getStocks(
-                searchParams,
-                PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, sort))
-        ).stream()
-                .map(StockDTO::fromStock)
+
+        List<StockDTO> stockList = stockService.getStocks(
+                        searchParams,
+                        PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, sort))
+                ).stream()
+                .map(stock -> {
+                    StockDTO stockDTO = StockDTO.fromStock(stock);
+                    return stockDTO;
+                })
                 .toList();
 
-
-       return ResponseEntity.ok(stock);
+        return ResponseEntity.ok(stockList);
     }
 
     @PreAuthorize("isAuthenticated()")

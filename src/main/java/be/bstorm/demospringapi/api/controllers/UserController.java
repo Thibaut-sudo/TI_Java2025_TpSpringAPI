@@ -21,16 +21,6 @@ public class UserController {
 
     private final UserService userService;
 
-//    @GetMapping
-//    public ResponseEntity<List<UserDTO>> getAllUsers(
-//            @ModelAttribute UserFilter filter
-//            ) {
-//        List<UserDTO> users = userService.getUsers(filter).stream()
-//                .map(UserDTO::fromUser)
-//                .toList();
-//        return ResponseEntity.ok(users);
-//    }
-
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers(
             @RequestParam Map<String, String> params,
