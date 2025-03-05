@@ -26,14 +26,17 @@ public class Warehouse {
     @JoinColumn(name = "stock_id", nullable = false)
     private Stock stock;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
 public Warehouse(){
 
 }
-    public Warehouse( Stock stock,User user) {
-        this.id = id;
+    public Warehouse( String nom,Stock stock,User user) {
         this.nom = nom;
         this.stock = stock;
+        this.user = user;
 
     }
 }

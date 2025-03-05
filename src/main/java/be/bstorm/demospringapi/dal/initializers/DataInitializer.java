@@ -3,9 +3,11 @@ package be.bstorm.demospringapi.dal.initializers;
 import be.bstorm.demospringapi.dal.repositories.ProductRepository;
 import be.bstorm.demospringapi.dal.repositories.StockRepository;
 import be.bstorm.demospringapi.dal.repositories.UserRepository;
+import be.bstorm.demospringapi.dal.repositories.WarehouseRepository;
 import be.bstorm.demospringapi.dl.entities.Product;
 import be.bstorm.demospringapi.dl.entities.Stock;
 import be.bstorm.demospringapi.dl.entities.User;
+import be.bstorm.demospringapi.dl.entities.Warehouse;
 import be.bstorm.demospringapi.dl.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -25,6 +27,7 @@ public class DataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final StockRepository stockRepository;
     private final ProductRepository productRepository;
+    private final WarehouseRepository warehouseRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -32,6 +35,7 @@ public class DataInitializer implements CommandLineRunner {
         Utilisateur();
         Produit();
         Stock();
+        Warehouse();
 
     }
 
@@ -122,6 +126,15 @@ public class DataInitializer implements CommandLineRunner {
             );
             userRepository.saveAll(users);
         }
+    }
+    private void Warehouse(){
+        if(warehouseRepository.count() == 0 ){
+            List<Warehouse>warehouses = List.of(
+                    new Warehouse("Warehouse1",stockRepository.findById(1L).orElseThrow(()->new RuntimeException("User not found")),userRepository.findById(1L).orElseThrow(()->new RuntimeException("User not found")))
+            );
+            warehouseRepository.saveAll(warehouses);
+        }
+
     }
 
 }
