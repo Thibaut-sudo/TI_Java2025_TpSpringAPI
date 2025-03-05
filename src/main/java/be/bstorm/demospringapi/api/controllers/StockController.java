@@ -4,6 +4,7 @@ import be.bstorm.demospringapi.api.models.security.dtos.StockDTO;
 import be.bstorm.demospringapi.api.models.security.forms.StockForm;
 import be.bstorm.demospringapi.bll.services.StockService;
 import be.bstorm.demospringapi.dl.entities.Stock;
+import be.bstorm.demospringapi.dl.entities.User;
 import be.bstorm.demospringapi.il.utils.request.SearchParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,8 +15,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -105,5 +108,19 @@ public class StockController {
     ) {
         Integer quantitee = stockService.getStockByProduct(id);
         return ResponseEntity.ok(quantitee);
+    }
+    @Operation(
+            summary = " Récupérer les stocks d'un utilisateur",
+            description = "Retourne la liste des stocks d'un utilisateur spécifique en fonction de son ID."
+            )
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/stock/user")
+    public ResponseEntity<List<Stock>> getStockByUser(
+
+            @AuthenticationPrincipal User user
+    ) {
+        List<Stock> stock = stockService.getStockByUser(user.getId());
+
+        return ResponseEntity.ok(stock);
     }
 }

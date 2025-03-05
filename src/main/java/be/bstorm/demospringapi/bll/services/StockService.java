@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
+
+import java.util.Arrays;
 import java.util.List;
 
 public interface StockService {
@@ -18,4 +20,6 @@ public interface StockService {
     void delete(Long id);
 
     Integer getStockByProduct(Long id);
+
+    List<Stock> getStockByUser(Long id);
 }
