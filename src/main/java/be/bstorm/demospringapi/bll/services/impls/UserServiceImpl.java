@@ -1,8 +1,6 @@
 package be.bstorm.demospringapi.bll.services.impls;
 
-import be.bstorm.demospringapi.bll.models.forms.user.UserFilter;
 import be.bstorm.demospringapi.bll.services.UserService;
-import be.bstorm.demospringapi.bll.specifications.UserSpecification;
 import be.bstorm.demospringapi.dal.repositories.UserRepository;
 import be.bstorm.demospringapi.dl.entities.User;
 import be.bstorm.demospringapi.il.utils.request.SearchParam;

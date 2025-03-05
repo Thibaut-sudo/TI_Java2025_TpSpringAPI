@@ -46,9 +46,6 @@ public class User extends BaseEntity<Long> implements UserDetails {
     @Setter
     private String image;
 
-    @ManyToMany
-    private final Set<User> friends = new HashSet<>();
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Setter
     private List<Stock> stockPackages = new ArrayList<>();
@@ -79,13 +76,9 @@ public class User extends BaseEntity<Long> implements UserDetails {
         stockPackage.setUser(null);
     }
 
-    public void addFriend(User user) {
-        this.friends.add(user);
-    }
 
-    public void removeFriend(User user) {
-        this.friends.remove(user);
-    }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
