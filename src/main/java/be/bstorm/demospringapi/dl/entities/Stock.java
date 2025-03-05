@@ -30,6 +30,8 @@ public class Stock {
         this.produit = produit;
         this.user = user;
     }
+
+
 }
 
 

@@ -12,4 +12,5 @@ public record StockDTO(
     public static StockDTO fromStock(Stock stock) {
         return new StockDTO(stock.getId(), stock.getQuantiteDisponible(), stock.getProduit().getId(), stock.getUser().getId());
     }
+
 }

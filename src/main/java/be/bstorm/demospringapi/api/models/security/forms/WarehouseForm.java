@@ -1,22 +1,18 @@
 package be.bstorm.demospringapi.api.models.security.forms;
 
 
-import be.bstorm.demospringapi.dl.entities.Stock;
+import be.bstorm.demospringapi.dl.entities.Warehouse;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-
-
-public record StockForm(
+public record WarehouseForm (
         @NotBlank @Size(max = 30)
-        int quantite_disponible,
-        @NotBlank @Size(max = 30)
-        Long product_id,
+        Long id,
         @NotBlank @Size(max = 30)
         Long stock_id) {
 
-
-    public Stock toStock(){
-        return new Stock();
+    public Warehouse toWarehouse() {
+        return new Warehouse();
     }
 }
+
