@@ -14,27 +14,26 @@ import java.util.Map;
 @Hidden
 @RestControllerAdvice
 public class ControllerAdvisor {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> exception(Exception ex){
-        return ResponseEntity.status(500).body(ex.getMessage());
-    }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> handleException(AccessDeniedException e) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You dont have access to this resource");
-    }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleException(MethodArgumentNotValidException e) {
-
-        Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getFieldErrors().forEach((error) -> {
-            errors.put(error.getField(),error.getDefaultMessage());
-        });
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-    }
-
+    // Gestion des erreurs générales
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
+    // Gestion des erreurs d'accès interdit
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You don't have access to this resource");
+    }
+
+    // Gestion des erreurs de validation (ex: @Valid sur un formulaire)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getFieldErrors().forEach((error) -> {
+            errors.put(error.getField(), error.getDefaultMessage());
+        });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 }
