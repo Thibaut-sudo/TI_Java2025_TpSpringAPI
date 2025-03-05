@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class Panier {
     private UUID idPanier;
 
     @Column(nullable = false)
-    private int prixTotal;
+    private BigDecimal prixTotal;
 
     @Column(nullable = false)
     private String statut;
@@ -33,9 +34,4 @@ public class Panier {
     @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProduitPanier> produits = new ArrayList<>();
 
-    public Panier(User user, int prixTotal, String statut) {
-        this.user = user;
-        this.prixTotal = prixTotal;
-        this.statut = statut;
-    }
 }
