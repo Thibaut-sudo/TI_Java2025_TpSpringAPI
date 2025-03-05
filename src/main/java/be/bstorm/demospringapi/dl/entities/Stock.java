@@ -1,6 +1,8 @@
 package be.bstorm.demospringapi.dl.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 
@@ -32,6 +34,9 @@ public class Stock {
     }
 
 
+    public Stock(@NotBlank @Size(max = 30) int quantiteDisponible) {
+        this.quantiteDisponible= quantiteDisponible;
+    }
 }
 
 

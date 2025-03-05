@@ -2,21 +2,24 @@ package be.bstorm.demospringapi.api.models.security.forms;
 
 
 import be.bstorm.demospringapi.dl.entities.Stock;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+
 
 
 
 public record StockForm(
-        @NotBlank @Size(max = 30)
-        int quantite_disponible,
-        @NotBlank @Size(max = 30)
-        Long product_id,
-        @NotBlank @Size(max = 30)
-        Long stock_id) {
+
+        @NotNull  // Vérifie que la valeur n'est pas nulle
+        @PositiveOrZero // Vérifie que la quantité est >= 0
+        int quantite_disponible)
+
+{
+
 
 
     public Stock toStock(){
-        return new Stock();
+        return new Stock(this.quantite_disponible);
     }
 }
