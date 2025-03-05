@@ -2,6 +2,7 @@ package be.bstorm.demospringapi.bll.services.impls;
 
 import be.bstorm.demospringapi.api.models.security.dtos.ProductDTO;
 import be.bstorm.demospringapi.api.models.security.forms.ProductForm;
+import be.bstorm.demospringapi.bll.exceptions.product.ProductNotFoundException;
 import be.bstorm.demospringapi.bll.services.ProductService;
 import be.bstorm.demospringapi.dal.repositories.ProductRepository;
 import be.bstorm.demospringapi.dl.entities.Product;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO foundOneDetails(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID : " + id));
+                .orElseThrow(() -> new ProductNotFoundException(HttpStatus.NOT_FOUND, "Produit non trouvé avec l'ID : " + id));
 
         return ProductDTO.fromProduct(product);
     }
@@ -62,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO update(Long id, ProductForm productForm) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID : " + id));
+                .orElseThrow(() -> new ProductNotFoundException(HttpStatus.NOT_FOUND, "Produit non trouvé avec l'ID : " + id));
 
         product.setNom(productForm.nom());
         product.setDescription(productForm.nom());
