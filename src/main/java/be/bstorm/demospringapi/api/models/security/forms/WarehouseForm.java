@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Size;
 public record WarehouseForm (
         @NotBlank @Size(max = 30)
         Long id,
+        @NotBlank @Size(max = 50)
+        String nom ,
         @NotBlank @Size(max = 30)
         Long stock_id) {
 
