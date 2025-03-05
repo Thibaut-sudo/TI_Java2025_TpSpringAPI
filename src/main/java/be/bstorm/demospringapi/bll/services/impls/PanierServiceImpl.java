@@ -63,7 +63,7 @@ public class PanierServiceImpl implements PanierService {
                 .orElseThrow(() -> new RuntimeException("Panier non trouvé"));
         Product produit = productRepository.findById(produitPanier.getId())
                 .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
-        panier.getProduits().add(produit);
+        panier.getProduits().add(produitPanier);
         panier.getPrixTotal().add(produit.getPrix());
         panier.getStatut();
         return panierRepository.save(panier);

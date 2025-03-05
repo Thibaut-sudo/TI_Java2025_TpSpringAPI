@@ -2,6 +2,7 @@ package be.bstorm.demospringapi.api.models.security.forms;
 
 import be.bstorm.demospringapi.dl.entities.Product;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,7 @@ public record ProductForm (
         @NotBlank
         String imageUrl,
 
-        @NotBlank @Size(max = 30)
+        @NotNull
         BigDecimal prix
 ){
     public ProductForm {
