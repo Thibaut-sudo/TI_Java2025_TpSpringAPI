@@ -1,6 +1,7 @@
 package be.bstorm.demospringapi.bll.services.impls;
 
 import be.bstorm.demospringapi.api.models.security.forms.StockForm;
+import be.bstorm.demospringapi.bll.exceptions.stock.StockNotFoundException;
 import be.bstorm.demospringapi.bll.services.StockService;
 import be.bstorm.demospringapi.dal.repositories.StockRepository;
 import be.bstorm.demospringapi.dl.entities.Stock;
@@ -8,7 +9,9 @@ import be.bstorm.demospringapi.il.utils.request.SearchParam;
 import be.bstorm.demospringapi.il.utils.specifications.SearchSpecification;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Page;
@@ -51,7 +54,7 @@ public class StockServiceImpls implements StockService {
 
     @Override
     public void update(Long id , StockForm form) {
-        Stock stock = stockRepository.findById(id).orElseThrow();
+        Stock stock = stockRepository.findById(id).orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
         stock.setQuantiteDisponible(form.quantite_disponible());
 
 
