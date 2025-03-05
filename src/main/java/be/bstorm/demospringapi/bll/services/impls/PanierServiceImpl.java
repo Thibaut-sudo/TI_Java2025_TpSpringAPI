@@ -7,9 +7,7 @@ import be.bstorm.demospringapi.dl.entities.Product;
 import be.bstorm.demospringapi.dl.entities.ProduitPanier;
 import be.bstorm.demospringapi.dal.repositories.PanierRepository;
 import be.bstorm.demospringapi.dal.repositories.UserRepository;
-import be.bstorm.demospringapi.dl.entities.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -54,7 +52,9 @@ public class PanierServiceImpl implements PanierService {
 
     @Override
     public void supprimerPanier(UUID idPanier) {
-        panierRepository.deleteById(idPanier);
+        Panier panier = panierRepository.findById(idPanier)
+                .orElseThrow(() -> new RuntimeException("Panier non trouvé"));
+        panierRepository.delete(panier);
     }
 
     @Override

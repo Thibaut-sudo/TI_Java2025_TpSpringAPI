@@ -31,7 +31,6 @@ public class PanierController {
             @RequestBody ProduitPanier produitPanier) {
         Panier panierUpdated = panierService.addProduitToPanier(panierId, produitPanier);
         panierUpdated.setStatut("attente");
-
         return ResponseEntity.ok(panierUpdated);
     }
 
