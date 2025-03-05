@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode @ToString
-public class Product {
+public class Product extends ProduitPanier {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
 

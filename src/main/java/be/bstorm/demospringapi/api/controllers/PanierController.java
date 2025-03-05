@@ -3,11 +3,9 @@ package be.bstorm.demospringapi.api.controllers;
 import be.bstorm.demospringapi.bll.services.PanierService;
 import be.bstorm.demospringapi.dl.entities.Panier;
 import be.bstorm.demospringapi.dl.entities.ProduitPanier;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -31,13 +29,10 @@ public class PanierController {
             @PathVariable UUID userId
     ) {
         Optional<Panier> panier = panierService.getPanierByUser(userId);
-        return ResponseEntity.ok(panier.orElseThrow(() -> new RuntimeException("Panier non trouvé")));
-    }
+        return ResponseEntity.ok(panier.get());
 
-    @Operation(
-            summary = "Ajouter un produit au panier",
-            description = "Ajoute un produit spécifique dans le panier via son ID."
-    )
+    }
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/{panierId}/ajouter-produit")
     public ResponseEntity<Panier> addProduitToPanier(
             @Parameter(description = "ID du panier", example = "550e8400-e29b-41d4-a716-446655440000")
@@ -50,10 +45,7 @@ public class PanierController {
         return ResponseEntity.ok(panierUpdated);
     }
 
-    @Operation(
-            summary = "Mettre à jour un panier",
-            description = "Met à jour le statut du panier en fonction de son ID."
-    )
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{panierId}")
     public ResponseEntity<Panier> updatePanier(
             @Parameter(description = "ID du panier à mettre à jour", example = "550e8400-e29b-41d4-a716-446655440000")
@@ -64,10 +56,7 @@ public class PanierController {
         return ResponseEntity.ok(updatedPanier);
     }
 
-    @Operation(
-            summary = "Supprimer un panier",
-            description = "Supprime un panier de la base de données via son ID."
-    )
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{panierId}")
     public ResponseEntity<Void> deletePanier(
             @Parameter(description = "ID du panier à supprimer", example = "550e8400-e29b-41d4-a716-446655440000")
