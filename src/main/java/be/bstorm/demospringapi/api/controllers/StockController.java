@@ -36,7 +36,7 @@ public class StockController {
     )
     @GetMapping
     public ResponseEntity<List<StockDTO>> getStocks(
-            @RequestParam Map<String, String> params,
+            @RequestParam(required = false) Map<String, String> params,
             @Parameter(description = "Numéro de la page", example = "0")
             @RequestParam(required = false, defaultValue = "0") int page,
             @Parameter(description = "Nombre d'éléments par page", example = "10")

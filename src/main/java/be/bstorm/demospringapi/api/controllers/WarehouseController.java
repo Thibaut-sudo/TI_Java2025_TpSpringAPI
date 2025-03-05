@@ -30,7 +30,7 @@ public class WarehouseController {
         private final WarehouseService warehouseService;
         @GetMapping
         public ResponseEntity<List<WarehouseDTO>> getWarehouse(
-                @RequestParam Map<String,String> params,
+                @RequestParam(required = false) Map<String,String> params,
                 @RequestParam(required = false, defaultValue = "0") int page,
                 @RequestParam(required = false, defaultValue = "10") int size,
                 @RequestParam(required = false, defaultValue = "id") String sort

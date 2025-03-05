@@ -31,7 +31,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers(
             @Parameter(description = "Filtres dynamiques sous forme de clé-valeur")
-            @RequestParam Map<String, String> params,
+            @RequestParam(required = false) Map<String, String> params,
 
             @Parameter(description = "Numéro de la page", example = "0")
             @RequestParam(required = false, defaultValue = "0") int page,
