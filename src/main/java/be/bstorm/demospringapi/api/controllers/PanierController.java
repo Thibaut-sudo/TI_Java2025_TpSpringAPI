@@ -44,7 +44,6 @@ public class PanierController {
     ) {
         Panier panierUpdated = panierService.addProduitToPanier(panierId, produitPanier);
         panierUpdated.setStatut("attente");
-
         return ResponseEntity.ok(panierUpdated);
     }
 
