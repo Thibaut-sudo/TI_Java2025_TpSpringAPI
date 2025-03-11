@@ -17,15 +17,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class StockServiceImpls implements StockService {
     private final StockRepository stockRepository;
-
-
 
     @Override
     public Page<Stock> getStocks(List<SearchParam<Stock>> searchParams,Pageable pageable) {
@@ -42,8 +39,6 @@ public class StockServiceImpls implements StockService {
                 pageable
         );
     }
-
-
 
     @Override
     public void insert(StockForm stockForm) {
@@ -65,19 +60,21 @@ public class StockServiceImpls implements StockService {
 
     @Override
     public void delete(Long id) {
-        Stock stock = stockRepository.findById(id).orElseThrow();
+        Stock stock = stockRepository.findById(id)
+                .orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
         stockRepository.delete(stock);
     }
 
     @Override
     public Integer getStockByProduct(Long id) {
-        return stockRepository.getQuantiteFromIdProduit(id).orElseThrow();
-
+        return stockRepository.getQuantiteFromIdProduit(id)
+                .orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
     }
 
     @Override
     public List<Stock> getStockByUser(Long id) {
-        return stockRepository.findAllByUser(id).orElseThrow();
+        return stockRepository.findAllByUser(id)
+                .orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
     }
 
 }

@@ -1,7 +1,6 @@
 package be.bstorm.demospringapi.bll.services.impls;
 
 import be.bstorm.demospringapi.bll.exceptions.Panier.PanierNotFoundException;
-import be.bstorm.demospringapi.bll.exceptions.product.ProductNotFoundException;
 import be.bstorm.demospringapi.bll.services.PanierService;
 import be.bstorm.demospringapi.dal.repositories.ProductRepository;
 import be.bstorm.demospringapi.dl.entities.Panier;
@@ -40,7 +39,7 @@ public class PanierServiceImpl implements PanierService {
     @Override
     public Panier updateStatut(UUID idPanier, String statut) {
         Panier panier = panierRepository.findById(idPanier)
-                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Produit non trouvé"));
+                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Panier non trouvé"));
         panier.setStatut(statut);
         return panierRepository.save(panier);
     }
@@ -48,7 +47,7 @@ public class PanierServiceImpl implements PanierService {
     @Override
     public Panier updatePrixTotal(UUID idPanier, BigDecimal prixTotal) {
         Panier panier = panierRepository.findById(idPanier)
-                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Produit non trouvé"));
+                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Panier non trouvé"));
         panier.setPrixTotal(prixTotal);
         return panierRepository.save(panier);
     }
@@ -56,16 +55,16 @@ public class PanierServiceImpl implements PanierService {
     @Override
     public void supprimerPanier(UUID idPanier) {
         Panier panier = panierRepository.findById(idPanier)
-                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Produit non trouvé"));
+                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Panier non trouvé"));
         panierRepository.delete(panier);
     }
 
     @Override
     public Panier addProduitToPanier(UUID idpanier, ProduitPanier produitPanier) {
         Panier panier = panierRepository.findById(idpanier)
-                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Produit non trouvé"));
+                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Panier non trouvé"));
         Product produit = productRepository.findById(produitPanier.getId())
-                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Produit non trouvé"));
+                .orElseThrow(() -> new PanierNotFoundException(HttpStatus.NOT_FOUND, "Panier non trouvé"));
         panier.getProduits().add(produitPanier);
         panier.getPrixTotal().add(produit.getPrix());
         panier.getStatut();
