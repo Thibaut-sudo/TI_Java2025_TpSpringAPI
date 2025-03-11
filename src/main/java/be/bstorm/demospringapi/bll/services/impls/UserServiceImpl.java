@@ -1,5 +1,7 @@
 package be.bstorm.demospringapi.bll.services.impls;
 
+import be.bstorm.demospringapi.bll.exceptions.Panier.PanierNotFoundException;
+import be.bstorm.demospringapi.bll.exceptions.user.UserNotFoundException;
 import be.bstorm.demospringapi.bll.services.UserService;
 import be.bstorm.demospringapi.dal.repositories.UserRepository;
 import be.bstorm.demospringapi.dl.entities.User;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,18 +24,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> getUsers(List<SearchParam<User>> searchParams, Pageable pageable) {
-        if(searchParams.isEmpty()){
-            return userRepository.findAll(pageable);
+        Page<User> users;
+
+        if (searchParams.isEmpty()) {
+            users = userRepository.findAll(pageable);
+        } else {
+            users = userRepository.findAll(
+                    Specification.allOf(
+                            searchParams.stream()
+                                    .map(SearchSpecification::search)
+                                    .toList()
+                    ),
+                    pageable
+            );
         }
-        return userRepository.findAll(
-                Specification.allOf(
-                        searchParams.stream()
-                                .map(SearchSpecification::search)
-                                .toList()
-                ),
-                pageable
-        );
+        if (users.isEmpty()) {
+            throw new UserNotFoundException(HttpStatus.NOT_FOUND, "utulisateur non trouvé");
+        }
+        return users;
     }
+}
 
 //    @Override
 //    public List<User> getUsers(UserFilter filter) {
@@ -50,4 +61,4 @@ public class UserServiceImpl implements UserService {
 //
 //        return userRepository.findAll(spec);
 //    }
-}
+

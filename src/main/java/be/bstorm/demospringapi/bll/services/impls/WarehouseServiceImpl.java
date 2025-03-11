@@ -1,6 +1,7 @@
 package be.bstorm.demospringapi.bll.services.impls;
 
 import be.bstorm.demospringapi.api.models.security.forms.WarehouseForm;
+import be.bstorm.demospringapi.bll.exceptions.warehouse.WarehouseNotFoundException;
 import be.bstorm.demospringapi.bll.services.WarehouseService;
 import be.bstorm.demospringapi.dal.repositories.WarehouseRepository;
 import be.bstorm.demospringapi.dl.entities.Warehouse;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,9 +51,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 
         @Override
         public void delete(Long id) {
-            Warehouse warehouse = warehouseRepository.findById(id).orElseThrow();
+            Warehouse warehouse = warehouseRepository.findById(id)
+                    .orElseThrow(()->new WarehouseNotFoundException(HttpStatus.NOT_FOUND, "Warehouse with id " + id + " not found"));
             warehouseRepository.delete(warehouse);
         }
-
-
     }
