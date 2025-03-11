@@ -1,6 +1,7 @@
 package be.bstorm.demospringapi.bll.services.impls;
 
 import be.bstorm.demospringapi.api.models.security.forms.StockForm;
+import be.bstorm.demospringapi.bll.exceptions.product.ProductNotFoundException;
 import be.bstorm.demospringapi.bll.exceptions.stock.StockNotFoundException;
 import be.bstorm.demospringapi.bll.services.StockService;
 import be.bstorm.demospringapi.dal.repositories.StockRepository;
@@ -79,7 +80,13 @@ public class StockServiceImpls implements StockService {
 
     @Override
     public void deleteProductUser(Long idProduct, Long id) {
+
+        if (!stockRepository.existsById(id)) {
+            throw new ProductNotFoundException(HttpStatus.NOT_FOUND, "impossible de supprimer le Produit");
+        }
         stockRepository.deleteProductUser(idProduct,id);
+
+
     }
 
     @Override
