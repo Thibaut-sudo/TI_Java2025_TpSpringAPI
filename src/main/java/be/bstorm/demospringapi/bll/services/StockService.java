@@ -22,4 +22,6 @@ public interface StockService {
     Integer getStockByProduct(Long id);
 
     List<Stock> getStockByUser(Long id);
+
+    void deleteProductUser(Long idProduct, Long id);
 }

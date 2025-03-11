@@ -22,6 +22,7 @@ public class PanierServiceImpl implements PanierService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
+
     @Override
     public Panier ajouterPanier(Panier panier) {
         panier.setStatut("attente");

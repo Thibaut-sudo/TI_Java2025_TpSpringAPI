@@ -87,13 +87,15 @@ public class StockController {
             summary = "Supprimer un stock",
             description = "Supprime un stock de la base de données en fonction de son ID."
     )
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('COMERCIAL')")
     @DeleteMapping("/{id}")
     public ResponseEntity<StockDTO> deleteStock(
             @Parameter(description = "ID du stock à supprimer", example = "1")
-            @PathVariable Long id
+            @PathVariable Long id,
+
+            @AuthenticationPrincipal User user
     ) {
-        stockService.delete(id);
+        stockService.deleteProductUser(id, user.getId());
         return ResponseEntity.noContent().build();
     }
 

@@ -80,4 +80,9 @@ public class StockServiceImpls implements StockService {
         return stockRepository.findAllByUser(id).orElseThrow();
     }
 
+    @Override
+    public void deleteProductUser(Long idProduct, Long id) {
+        stockRepository.deleteProductUser(idProduct,id);
+    }
+
 }
