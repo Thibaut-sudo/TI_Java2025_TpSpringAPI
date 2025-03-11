@@ -27,4 +27,7 @@ public interface StockRepository extends JpaRepository<Stock, Long>, JpaSpecific
     @Modifying
     @Query("DELETE FROM Stock s WHERE s.produit.id = :idProduct AND s.user.id = :id")
     void deleteProductUser(Long idProduct, Long id);
+
+    @Query("SELECT s FROM Stock s WHERE s.quantiteDisponible < :threshold AND s.user.id = :id")
+    List<Stock> findLowStock(int threshold, Long id );
 }
