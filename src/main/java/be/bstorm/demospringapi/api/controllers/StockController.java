@@ -18,7 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Map;
 
@@ -124,5 +124,11 @@ public class StockController {
         List<Stock> stock = stockService.getStockByUser(user.getId());
 
         return ResponseEntity.ok(stock);
+    }
+    @PreAuthorize("hasRole('COMERCIAL')")
+    @GetMapping("/low")
+    public List<Stock> getLowStock(@RequestParam(defaultValue = "5") int threshold,
+                                   @AuthenticationPrincipal User user) {
+        return stockService.getLowStock(threshold, user.getId());
     }
 }

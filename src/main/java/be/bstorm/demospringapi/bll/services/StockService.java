@@ -24,4 +24,8 @@ public interface StockService {
     List<Stock> getStockByUser(Long id);
 
     void deleteProductUser(Long idProduct, Long id);
+
+     List<Stock> getLowStock(int threshold, Long id) ;
+
+
 }
