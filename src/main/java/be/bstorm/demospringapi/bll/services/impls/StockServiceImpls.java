@@ -81,8 +81,14 @@ public class StockServiceImpls implements StockService {
     public void deleteProductUser(Long idProduct, Long id) {
         stockRepository.deleteProductUser(idProduct,id);
     }
-    public List<Stock> getLowStock(int threshold, Long id) {
-        return stockRepository.findLowStock(threshold, id );
-    }
 
+    @Override
+    public List<Stock> getLowStock(int threshold, Long id) {
+        return stockRepository.findLowStock(threshold, id)
+                .orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
+
+
+    }
 }
+
+

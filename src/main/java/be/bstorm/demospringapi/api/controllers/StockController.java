@@ -127,8 +127,9 @@ public class StockController {
     }
     @PreAuthorize("hasRole('COMERCIAL')")
     @GetMapping("/low")
-    public List<Stock> getLowStock(@RequestParam(defaultValue = "5") int threshold,
+    public ResponseEntity<List<Stock>> getLowStock(@RequestParam(defaultValue = "5") int threshold,
                                    @AuthenticationPrincipal User user) {
-        return stockService.getLowStock(threshold, user.getId());
+        List<Stock>stock = stockService.getLowStock(threshold, user.getId());
+        return ResponseEntity.ok(stock);
     }
 }
