@@ -114,7 +114,7 @@ public class StockController {
     @Operation(
             summary = " Récupérer les stocks d'un utilisateur",
             description = "Retourne la liste des stocks d'un utilisateur spécifique en fonction de son ID."
-            )
+    )
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/stock/user")
     public ResponseEntity<List<Stock>> getStockByUser(
@@ -125,6 +125,11 @@ public class StockController {
 
         return ResponseEntity.ok(stock);
     }
+
+    @Operation(
+            summary = "Récupérer les stocks faibles",
+            description = "Retourne la liste des stocks sous un certain seuil pour un utilisateur."
+    )
     @PreAuthorize("hasRole('COMERCIAL')")
     @GetMapping("/low")
     public ResponseEntity<List<Stock>> getLowStock(@RequestParam(defaultValue = "5") int threshold,

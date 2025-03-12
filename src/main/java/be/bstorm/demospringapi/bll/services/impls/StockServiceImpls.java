@@ -9,12 +9,9 @@ import be.bstorm.demospringapi.dl.entities.Stock;
 import be.bstorm.demospringapi.il.utils.request.SearchParam;
 import be.bstorm.demospringapi.il.utils.specifications.SearchSpecification;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,9 +23,9 @@ public class StockServiceImpls implements StockService {
     private final StockRepository stockRepository;
 
     @Override
-    public Page<Stock> getStocks(List<SearchParam<Stock>> searchParams,Pageable pageable) {
+    public Page<Stock> getStocks(List<SearchParam<Stock>> searchParams, Pageable pageable) {
 
-        if (searchParams.isEmpty()){
+        if (searchParams.isEmpty()) {
             return stockRepository.findAll(pageable);
         }
         return stockRepository.findAll(
@@ -45,37 +42,32 @@ public class StockServiceImpls implements StockService {
     public void insert(StockForm stockForm) {
         Stock stock = stockForm.toStock();
         stockRepository.save(stock);
-
     }
 
     @Override
-    public void update(Long id , StockForm form) {
-        Stock stock = stockRepository.findById(id).orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
+    public void update(Long id, StockForm form) {
+        Stock stock = stockRepository.findById(id).orElseThrow(() -> new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
         stock.setQuantiteDisponible(form.quantite_disponible());
-
-
         stockRepository.save(stock);
-
-
     }
 
     @Override
     public void delete(Long id) {
         Stock stock = stockRepository.findById(id)
-                .orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
+                .orElseThrow(() -> new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
         stockRepository.delete(stock);
     }
 
     @Override
     public Integer getStockByProduct(Long id) {
         return stockRepository.getQuantiteFromIdProduit(id)
-                .orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
+                .orElseThrow(() -> new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
     }
 
     @Override
     public List<Stock> getStockByUser(Long id) {
         return stockRepository.findAllByUser(id)
-                .orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
+                .orElseThrow(() -> new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
     }
 
     @Override
@@ -84,18 +76,14 @@ public class StockServiceImpls implements StockService {
         if (!stockRepository.existsById(id)) {
             throw new ProductNotFoundException(HttpStatus.NOT_FOUND, "impossible de supprimer le Produit");
         }
-        stockRepository.deleteProductUser(idProduct,id);
-
+        stockRepository.deleteProductUser(idProduct, id);
 
     }
 
     @Override
     public List<Stock> getLowStock(int threshold, Long id) {
         return stockRepository.findLowStock(threshold, id)
-                .orElseThrow(()->new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
-
+                .orElseThrow(() -> new StockNotFoundException(HttpStatus.NOT_FOUND, "Post with id " + id + " not found"));
 
     }
 }
-
-
