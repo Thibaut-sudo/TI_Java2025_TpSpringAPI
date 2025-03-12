@@ -1,7 +1,9 @@
 package be.bstorm.demospringapi.api.controllers;
 
 import be.bstorm.demospringapi.api.models.security.dtos.ProductDTO;
+import be.bstorm.demospringapi.api.models.security.dtos.ProductReturnDTO;
 import be.bstorm.demospringapi.api.models.security.forms.ProductForm;
+import be.bstorm.demospringapi.api.models.security.forms.ProductReturnForm;
 import be.bstorm.demospringapi.bll.services.ProductService;
 import be.bstorm.demospringapi.dl.entities.Product;
 import be.bstorm.demospringapi.il.utils.request.SearchParam;
@@ -15,9 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -102,4 +104,27 @@ public class ProductController {
         productService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
+
+    // Point d'entrée API pour rechercher des produits similaires
+    @Operation(
+            summary = "Rechercher un produit",
+            description = "Rechercher un produit par mot-clé et site."
+    )
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> searchProducts(
+            @Parameter(description = "Produit à rechercher", example = "Soumission")
+            @RequestParam String query,
+            @Parameter(description = "Site ou chercher", example = "https://books.toscrape.com")
+            @RequestParam String site) throws IOException {
+
+        List<Product> productsReturn = productService.researchProducts(query, site);
+
+        return ResponseEntity.ok(productsReturn);
+    }
 }
+
+
