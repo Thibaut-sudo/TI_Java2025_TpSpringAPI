@@ -20,11 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.nodes.Element;
 import java.math.BigDecimal;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository ;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     @Override
     public Page<Product> getProduct(List<SearchParam<Product>> searchParams, Pageable pageable) {
@@ -85,9 +89,6 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-
-
-
     @Override
     public List<Product> researchProducts(String query, String site) throws IOException {
         List<Product> productList = new ArrayList<>();
@@ -101,22 +102,22 @@ public class ProductServiceImpl implements ProductService {
             Document doc;
             try {
                 doc = Jsoup.connect(pageUrl)
-                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
-                        .timeout(10 * 1000)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+                        .timeout(5000) // Timeout réduit pour éviter les blocages
                         .get();
             } catch (IOException e) {
                 System.out.println("No more pages. Stopping search.");
-                break;  // Stop when a 404 error occurs
+                break;
             }
 
             Elements books = doc.select("article.product_pod");
-            if (books.isEmpty()) break; // Stop if no books found (last page reached)
+            if (books.isEmpty()) break;
+
+            List<CompletableFuture<Product>> futures = new ArrayList<>();
 
             for (Element book : books) {
                 String title = book.select("h3 a").attr("title");
                 String priceText = book.select("p.price_color").text().replace("£", "").replace(",", ".");
-                String description = book.select("p.product_description").text();
-
                 String link = site + "/catalogue/" + book.select("h3 a").attr("href");
 
                 BigDecimal price;
@@ -126,22 +127,37 @@ public class ProductServiceImpl implements ProductService {
                     price = BigDecimal.ZERO;
                 }
 
-                if (title.toLowerCase().contains(searchQuery.toLowerCase())) {
-                    productList.add(new Product( title , description , price ));
-                    System.out.println(doc.html());
+                if (title.toLowerCase().contains(searchQuery)) {
+                    BigDecimal finalPrice = price;
+                    futures.add(CompletableFuture.supplyAsync(() -> fetchBookDescription(link, title, finalPrice), executorService));
                 }
-
             }
 
-            page++; // Move to the next page
-        }
+            productList.addAll(futures.stream()
+                    .map(CompletableFuture::join)
+                    .toList());
 
+            page++;
+        }
         return productList;
     }
 
+    private Product fetchBookDescription(String bookUrl, String title, BigDecimal price) {
+        try {
+            Document doc = Jsoup.connect(bookUrl)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+                    .timeout(5000)
+                    .get();
 
+            Element descriptionElement = doc.selectFirst("meta[name=description]");
+            String description = descriptionElement != null ? descriptionElement.attr("content").trim() : "Description non disponible";
 
-
+            return new Product(title, description, price);
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la récupération de la description: " + e.getMessage());
+            return new Product(title, "Description non disponible", price);
+        }
+    }
 
 
 
