@@ -29,6 +29,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public void assignCharactersToUser(Long userId, double orderAmount) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
 
@@ -55,7 +56,7 @@ public class CharacterServiceImpl implements CharacterService {
                 .collect(Collectors.toList());
     }
 
-    public Personnage getRandomPersonnage(double orderAmount) {
+    public Personnage getRandomPersonnage(Double orderAmount) {
         double roll = random.nextDouble();
         if (orderAmount < 100) {
             return roll < 0.9 ? getRandomByRarity("Common") : getRandomByRarity("Rare");
