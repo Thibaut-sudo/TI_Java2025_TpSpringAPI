@@ -8,12 +8,12 @@ import be.bstorm.demospringapi.bll.services.OrderService;
 import be.bstorm.demospringapi.dal.repositories.OrderRepository;
 import be.bstorm.demospringapi.dal.repositories.UserRepository;
 import be.bstorm.demospringapi.dl.entities.Order;
+import be.bstorm.demospringapi.dl.entities.Personnage;
 import be.bstorm.demospringapi.dl.entities.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,8 +37,20 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
         order.setTotalAmount(orderForm.getTotalAmount());
         order.setOrderDate(LocalDateTime.now());
+
         Order savedOrder = orderRepository.save(order);
-        characterService.assignCharactersToUser(userId, orderForm.getTotalAmount());
+
+        // 🔍 Ajout de logs
+        System.out.println("Commande créée avec succès pour l'utilisateur ID : " + userId);
+        System.out.println("Montant de la commande : " + orderForm.getTotalAmount());
+        try {
+            characterService.assignCharactersToUser(userId, orderForm.getTotalAmount());
+            System.out.println("Personnages attribués à l'utilisateur !");
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'assignation des personnages : " + e.getMessage());
+            e.printStackTrace();
+        }
+
         return OrderDTO.fromOrder(savedOrder);
     }
 
@@ -46,7 +58,6 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> getUserOrders(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
-
         return orderRepository.findByUser(user).stream()
                 .map(OrderDTO::fromOrder)
                 .collect(Collectors.toList());

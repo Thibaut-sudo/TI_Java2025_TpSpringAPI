@@ -21,4 +21,10 @@ public class Personnage {
 
     @Column(nullable = false)
     private String rarity;
+
+    public Personnage(Long id, String name, String rarity) {
+        this.id = id;
+        this.name = name;
+        this.rarity = rarity;
+    }
 }
