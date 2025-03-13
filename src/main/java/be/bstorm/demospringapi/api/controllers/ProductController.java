@@ -113,7 +113,7 @@ public class ProductController {
             summary = "Rechercher un produit",
             description = "Rechercher un produit par mot-clé et site."
     )
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/search")
     public ResponseEntity<List<Product>> searchProducts(
             @Parameter(description = "Produit à rechercher", example = "Soumission")
