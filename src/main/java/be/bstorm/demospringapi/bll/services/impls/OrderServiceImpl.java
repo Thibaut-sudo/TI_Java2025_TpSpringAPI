@@ -8,7 +8,6 @@ import be.bstorm.demospringapi.bll.services.OrderService;
 import be.bstorm.demospringapi.dal.repositories.OrderRepository;
 import be.bstorm.demospringapi.dal.repositories.UserRepository;
 import be.bstorm.demospringapi.dl.entities.Order;
-import be.bstorm.demospringapi.dl.entities.Personnage;
 import be.bstorm.demospringapi.dl.entities.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +39,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        // 🔍 Ajout de logs
         System.out.println("Commande créée avec succès pour l'utilisateur ID : " + userId);
         System.out.println("Montant de la commande : " + orderForm.getTotalAmount());
         try {
