@@ -23,7 +23,7 @@ public class Warehouse {
     private String nom;
 
     @ManyToOne
-    @JoinColumn(name = "stock_id", nullable = false)
+    @JoinColumn(name = "stock_id", nullable = true)
     private Stock stock;
 
     @ManyToOne

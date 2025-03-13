@@ -17,7 +17,7 @@ public interface ProductService {
     ProductDTO foundOneDetails(Long id);
     void insert(ProductForm productForm);
     ProductDTO update(Long id, ProductForm productForm);
-    void delete(long id);
+    void delete(Long id);
     List<Product> researchProducts(String query, String site) throws IOException;
 
 }

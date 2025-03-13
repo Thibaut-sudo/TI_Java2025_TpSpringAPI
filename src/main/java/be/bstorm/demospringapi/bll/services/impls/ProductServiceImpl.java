@@ -6,9 +6,13 @@ import be.bstorm.demospringapi.bll.exceptions.Panier.PanierNotFoundException;
 import be.bstorm.demospringapi.bll.exceptions.product.ProductNotFoundException;
 import be.bstorm.demospringapi.bll.services.ProductService;
 import be.bstorm.demospringapi.dal.repositories.ProductRepository;
+import be.bstorm.demospringapi.dal.repositories.StockRepository;
+import be.bstorm.demospringapi.dal.repositories.WarehouseRepository;
 import be.bstorm.demospringapi.dl.entities.Product;
+import be.bstorm.demospringapi.dl.entities.Stock;
 import be.bstorm.demospringapi.il.utils.request.SearchParam;
 import be.bstorm.demospringapi.il.utils.specifications.SearchSpecification;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.nodes.Element;
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,6 +36,8 @@ import java.util.concurrent.Executors;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository ;
+    private final StockRepository stockRepository ;
+    private final WarehouseRepository warehouseRepository;
     private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     @Override
@@ -96,13 +103,25 @@ public class ProductServiceImpl implements ProductService {
         return ProductDTO.fromProduct(product);
     }
 
-    @Override
-    public void delete(long id) {
-        productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(HttpStatus.NOT_FOUND, "Impossible de supprimer le produit : ID introuvable"));
 
-        productRepository.deleteById(id);
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(HttpStatus.NOT_FOUND, "Produit introuvable"));
+
+        // Détacher les stocks du produit
+        Optional<Stock> stocks = stockRepository.findById(product.getId());
+
+        warehouseRepository.update(id);
+
+
+
+        // Supprimer le produit
+        productRepository.delete(product);
     }
+
 
 
     @Override
