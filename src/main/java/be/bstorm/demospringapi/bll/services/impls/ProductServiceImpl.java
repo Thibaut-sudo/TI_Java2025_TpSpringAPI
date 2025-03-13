@@ -98,11 +98,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void delete(long id) {
-        if (!productRepository.existsById(id)) {
-            throw new ProductNotFoundException(HttpStatus.NOT_FOUND, "impossible de supprimer le Produit");
-        }
+        productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(HttpStatus.NOT_FOUND, "Impossible de supprimer le produit : ID introuvable"));
+
         productRepository.deleteById(id);
     }
+
 
     @Override
     public List<Product> researchProducts(String query, String site) throws IOException {
