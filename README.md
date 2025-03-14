@@ -69,6 +69,8 @@ http://localhost:8080/swagger-ui.html
 - `PUT /stock/{id}` : Modifier un stock (authentification requise)
 - `DELETE /stock/{id}` : Supprimer un stock (rôle COMERCIAL requis)
 - `GET /stock/low` : Récupérer les stocks faibles (rôle COMERCIAL requis)
+- `GET /stock/product/{id}` : Récupérer la quantité en stock d'un produit
+- `GET /stock/user` : Récupérer les stocks d'un utilisateur
 
 ### Utilisateurs
 - `GET /user` : Récupérer tous les utilisateurs (paginé)
@@ -77,6 +79,11 @@ http://localhost:8080/swagger-ui.html
 - `GET /warehouse` : Récupérer tous les entrepôts
 - `POST /warehouse` : Ajouter un entrepôt (authentification requise)
 - `DELETE /warehouse/{id}` : Supprimer un entrepôt (authentification requise)
+
+- ### Authentification
+- `POST auth/login` : Connexion d'un utilisateur
+- `POST auth/register` : Inscription d'un utilisateur
+
 
 ## 📄 Licence
 Ce projet est sous licence MIT. Vous êtes libre de l'utiliser et de le modifier.
