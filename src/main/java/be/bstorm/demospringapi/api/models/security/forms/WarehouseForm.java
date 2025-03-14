@@ -7,14 +7,14 @@ import jakarta.validation.constraints.Size;
 
 public record WarehouseForm (
 
-        Long id,
+
         @NotBlank @Size(max = 50)
         String nom ,
 
         Long stock_id) {
 
     public Warehouse toWarehouse() {
-        return new Warehouse();
+        return new Warehouse(this.nom,this.stock_id, null);
     }
 }
 

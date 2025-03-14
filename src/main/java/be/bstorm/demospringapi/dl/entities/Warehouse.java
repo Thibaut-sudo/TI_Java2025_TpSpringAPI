@@ -1,11 +1,14 @@
 package be.bstorm.demospringapi.dl.entities;
 
 
+import be.bstorm.demospringapi.dal.repositories.StockRepository;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Data
@@ -13,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "warehouses")
 public class Warehouse {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +31,7 @@ public class Warehouse {
     private Stock stock;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
 public Warehouse(){
@@ -37,6 +41,12 @@ public Warehouse(){
         this.nom = nom;
         this.stock = stock;
         this.user = user;
+
+    }
+
+    public Warehouse(@NotBlank @Size(max = 50) String nom, Long stockId, Object user) {
+    this.nom = nom;
+
 
     }
 }
