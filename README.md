@@ -88,5 +88,6 @@ http://localhost:8080/swagger-ui.html
 ## 📄 Licence
 Ce projet est sous licence MIT. Vous êtes libre de l'utiliser et de le modifier.
 
-![image](https://github.com/user-attachments/assets/085e2494-2774-4cbe-b02b-5c0d76945e35)
+![image](https://github.com/user-attachments/assets/4980761d-8c31-40e3-81a6-6f00841e141c)
+
 
